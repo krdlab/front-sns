@@ -1,0 +1,14 @@
+{
+    "name": "frontsns"
+  , "version": "0.0.1"
+  , "private": true
+  , "dependencies": {
+      "express": "2.4.4"
+    , "ejs": ">= 0.0.1"
+    , "socket.io": "0.6.18"
+    , "redis": ">= 0.6.7"
+    , "connect-redis": ">= 1.0.7"
+    , "oauth": ">= 0.9.5"
+    , "twitter": ">= 0.1.17"
+  }
+}

@@ -1,0 +1,6 @@
+www:
+  type: nodejs
+  approot: frontsns
+data:
+  type: redis
+
