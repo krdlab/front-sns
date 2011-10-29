@@ -21,20 +21,29 @@
       e.stopPropagation();
     });
 
-    $('#signout').click(function(e) {
-      var active_service = get_active_service();
-      $.post('/signout', { service: active_service }, function(data) {
-        console.log(data);
-        var $main_panel = $('#main_panel');
-        $main_panel.empty();
-        if (active_service === 'twitter') {
-          $main_panel.append($('<a href="/auth/twitter"><img src="/images/twitter/sign-in-with-twitter-d.png" /></a>'));
-        } else {
-          $main_panel.append('<div>sorry</div>');
-        }
-      }, 'json');
-      e.preventDefault();
-      e.stopPropagation();
+    var get_signin_button = function(service) {
+      switch (service) {
+        case 'twitter':
+          return $('<a href="/auth/twitter">'
+                    + '<img src="/images/twitter/sign-in-with-twitter-d.png" />'
+                    + '</a>');
+        case 'facebook':
+          return $('<a class="btn primary" href="/auth/facebook">sign in with facebook</a>');
+      }
+      return $('<span>???</span>');
+    };
+
+    var add_events_for_main_panel = function() {
+      $('#signout').click(function(e) {
+        var active_service = get_active_service();
+        $.post('/signout', { service: active_service }, function(data) {
+          console.log(data);
+          $('#main_panel').empty()
+                          .append(get_signin_button(active_service));
+        }, 'json');
+        e.preventDefault();
+        e.stopPropagation();
+      });
     });
 
     // サービス切り替え
@@ -60,13 +69,16 @@
     // javascript で操作する HTML はサーバサイドで生成
     var get_timeline = function() {
       var $main_panel = $('#main_panel');
+      $main_panel.empty();
+
       var active_service = get_active_service();
       $.getJSON('/home_timeline',
                 { service: active_service, num: 20 }, function(data, status, xhr) {
         if ($.isArray(data)) {
           $main_panel.append($('<h2>TODO: screen_name</h2>'
-                              + '<p><a id="signout" class="btn small" href="#">signout</a></p>' // TODO event
+                              + '<p><a id="signout" class="btn small" href="#">signout</a></p>'
                               + '<ul id="home_timeline"></ul>'));
+          add_events_for_main_panel();
           var $home = $('#home_timeline');
           if (active_service === 'twitter') {
             $.each(data, function(i, e) {
@@ -80,15 +92,8 @@
             alert('TODO');
           }
         } else {
-          if (active_service === 'twitter') {
-            $main_panel.append($('<a href="/auth/twitter">'
-                                +'<img src="/images/twitter/sign-in-with-twitter-d.png" />'
-                                +'</a>'));
-          } else if (active_service === 'facebook') {
-            $main_panel.append($('<a class="btn primary" href="/auth/facebook">sign in with facebook</a>'));
-          } else {
-            console.log(data);
-          }
+          console.log(data);
+          $main_panel.append(get_signin_button(active_service));
         }
       });
     };
