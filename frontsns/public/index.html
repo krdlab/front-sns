@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang='ja'>
+  <head>
+    <meta charset="utf-8">
+    <title>Front SNS</title>
+    <meta name="description" content="'Front SNS' is a frontend service for SNS.">
+    <meta name="author" content="KrdLab">
+
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script src='/socket.io/socket.io.js'></script>
+    <script src="/javascripts/jquery-1.6.4.min.js"></script>
+    <script src='/javascripts/frontsns.js'></script>
+
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css" />
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <div>
+        <div class="input">
+          <textarea class="xxlarge" name="user_message" id="user_message" rows="3"></textarea>
+        </div>
+        <div style="text-align: left;">
+          <input type="checkbox" name="services" value="twitter" /><span>twitter</span>
+          <input type="checkbox" name="services" value="facebook" /><span>facebook</span>
+          <input type="checkbox" name="services" value="google+" /><span>google+</span>
+          <a id="user_post" class="btn primary mideum" href="#">Post</a>
+        </div>
+      </div>
+
+      <ul id="service_tabs" class="tabs">
+        <li class="active"><a href="#">Twitter</a></li>
+        <li><a href="#">Facebook</a></li>
+        <li><a href="#">Google+</a></li>
+      </ul>
+
+      <div class="row">
+        <div class="span8" id="main_panel">
+        </div>
+        <div class="span8">
+          <h2>Media</h2>
+          <p>TODO</p>
+        </div>
+      </div>
+
+      <footer>
+        <p>&copy; KrdLab 2011</p>
+      </footer>
+
+    </div> <!-- /container -->
+
+  </body>
+</html>
