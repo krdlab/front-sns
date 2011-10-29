@@ -1,6 +1,7 @@
 module.exports = function(conf) {
   var crypto = require('./crypto.js')(conf);
   var oauth  = require('oauth');
+  var qs     = require('querystring');
 
   var handlers = {};
 
@@ -31,6 +32,7 @@ module.exports = function(conf) {
     } else {
       services.forEach(function(service) {
         if (service === 'twitter') {
+          console.log('[INFO] post_message: selected twitter');
           if (session.twitter && session.twitter.access_token) {
             newTwit(conf, session).updateStatus(message, function(data) {
               res.send({ result: data });
@@ -39,7 +41,19 @@ module.exports = function(conf) {
             res.send({ error: 'no access token' });
           }
         } else if (service === 'facebook') {
-          // TODO
+          console.log('[INFO] post_message: selected facebook');
+          var facebook = new oauth.OAuth2(conf.facebook.consumer_key,
+                                          conf.facebook.consumer_secret,
+                                          'https://graph.facebook.com');
+          var post_headers = { 'Content-Type': 'application/x-www-form-urlencoded' };
+          var post_body = qs.stringify({ message: message });
+          var access_token = crypto.decipher_token(session.facebook.access_token);
+          facebook._request('POST', 'https://graph.facebook.com/me/feed'
+                          , post_headers, post_body
+                          , access_token
+                          , function(err, data, response) {
+            res.send({ error: err, data: data });  // TODO
+          });
         }
       });
     }
