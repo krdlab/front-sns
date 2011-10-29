@@ -187,7 +187,7 @@ module.exports = function(conf) {
       });
     } else {
       req.session.facebook = true;  // ここを経由したよ，という印
-      res.redirect(facebook.getAuthorizeUrl({ redirect_uri: redirect_uri }));
+      res.redirect(facebook.getAuthorizeUrl({ redirect_uri: redirect_uri, scope: 'read_stream,publish_stream' }));
     }
   };
 
