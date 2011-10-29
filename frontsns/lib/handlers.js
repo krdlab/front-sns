@@ -64,8 +64,9 @@ module.exports = function(conf) {
         var facebook = new oauth.OAuth2(conf.facebook.consumer_key,
                                         conf.facebook.consumer_secret,
                                         'https://graph.facebook.com');
+        var access_token = crypto.decipher_token(session.facebook.access_token);
         facebook.get('https://graph.facebook.com/me/home'
-                   , session.facebook.access_token
+                   , access_token
                    , function(err, data, response) {
           if (err) {
             console.warn(util.inspect(err));
